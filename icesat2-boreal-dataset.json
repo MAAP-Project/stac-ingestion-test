@@ -1,0 +1,74 @@
+{
+  "license": "CC0-1.0",
+  "stac_version": "1.0.0",
+  "links": [],
+  "spatial_extent": {
+    "xmin": -180,
+    "ymin": 50,
+    "xmax": 180,
+    "ymax": 80
+  },
+  "temporal_extent": {
+    "startdate": "2020-01-01T00:00:00.000Z",
+    "enddate": "2020-12-31T23:59:59.000Z"
+  },
+  "discovery_items": [
+    {
+      "upload": false,
+      "cogify": false,
+      "dry_run": false,
+      "filename_regex": "(.*)boreal_agb_2020_(.*)_(.*).tif$",
+      "use_multithreading": false,
+      "discovery": "s3",
+      "prefix": "aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/AGB_H30_2020/full_run/2024/11/25/",
+      "bucket": "maap-ops-workspace"
+    }
+  ],
+  "sample_files": [
+    "s3://maap-ops-workspace/aliz237/dps_output/run_boreal_biomass_map/dev_v1.5/AGB_H30_2020/full_run/2025/01/21/11/34/44/297688/boreal_agb_2020_202501211737487322_0039261.tif"
+  ],
+  "data_type": "cog",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/render/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json"
+  ],
+  "item_assets": {
+    "cog_default": {
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized",
+      "roles": ["data", "layer"],
+      "title": "Default COG Layer",
+      "description": "Cloud optimized default layer to display on map"
+    }
+  },
+  "providers": [
+    {
+      "name": "NASA MAAP",
+      "roles": ["host"],
+      "url": "https://maap-project.org/"
+    }
+  ],
+  "assets": {
+    "thumbnail": {
+      "title": "Thumbnail",
+      "type": "image/jpeg",
+      "roles": ["thumbnail"],
+      "href": "https://ceos.org/gst/img/icesat2-boreal.png",
+      "description": "CEOS Icesat2 Boreal logo"
+    }
+  },
+  "collection": "icesat2-boreal-v2.1-agb",
+  "title": "Icesat2 Boreal v2.1 AGB",
+  "description": "biomass!",
+  "is_periodic": false,
+  "renders": {
+    "dashboard": {
+      "resampling": "nearest",
+      "colormap_name": "viridis",
+      "nodata": -9999,
+      "expression": ["cog_default_b1"],
+      "rescale": [[0, 125]],
+      "title": "VEDA Dashboard Render Parameters"
+    }
+  },
+  "transfer": true
+}
