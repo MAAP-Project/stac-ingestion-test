@@ -1,0 +1,38 @@
+name: Ingest
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ vars.deploy_role_arn }}
+          role-session-name: samplerolesession
+          aws-region: us-west-2
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.5.*" 
+          enable-cache: true
+    
+      - name: Install dependencies
+        run: |
+          uv sync
+
+      - name: Run ingestion pipeline
+        env:
+          DASK_COILED__TOKEN: ${{ secrets.COILED_TOKEN }}
+        run: uv run run.py

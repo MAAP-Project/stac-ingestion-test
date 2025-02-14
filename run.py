@@ -33,7 +33,7 @@ def scan_s3_files(bucket: str, prefix: str, filename_regex: str) -> List[str]:
     return matching_files
 
 
-@coiled.function(region="us-west-2", threads_per_worker=-1, local=True)
+@coiled.function(region="us-west-2", threads_per_worker=-1)
 def _create_item(key: str, collection_id: str, asset_name: str) -> Item:
     return create_stac_item(
         source=key,
@@ -116,7 +116,7 @@ def main():
     print("generating item metadata")
     asset_name = list(dataset["item_assets"].keys())[0]
     _items = _create_item.map(
-        inventory[:10], collection_id=collection.id, asset_name=asset_name
+        inventory, collection_id=collection.id, asset_name=asset_name
     )
 
     count = 0
@@ -127,11 +127,11 @@ def main():
 
     print(f"wrote {count} items to ndjson")
 
-    print("loading collection and items into pgstac database")
-    load_into_pgstac(
-        collection="/tmp/collection.json",
-        items="/tmp/items.ndjson",
-    )
+    # print("loading collection and items into pgstac database")
+    # load_into_pgstac(
+    #     collection="/tmp/collection.json",
+    #     items="/tmp/items.ndjson",
+    # )
 
 
 if __name__ == "__main__":
